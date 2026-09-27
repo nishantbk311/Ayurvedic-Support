@@ -10,7 +10,6 @@ interface SuccessModalProps {
   orderData: OrderFormData | null;
   selectedTier: PackageTier | null;
   currentLang: Language;
-  orderId: string;
 }
 
 export const SuccessModal: React.FC<SuccessModalProps> = ({
@@ -19,7 +18,6 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
   orderData,
   selectedTier,
   currentLang,
-  orderId,
 }) => {
   const t = translations[currentLang].order;
 
@@ -69,9 +67,6 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
             </motion.div>
 
             <div className="space-y-2">
-              <span className="text-xs font-mono font-bold text-[#eb7d26] uppercase tracking-wider">
-                {t.orderNumber} #{orderId}
-              </span>
               <h3 id="success-modal-title" className="text-2xl font-bold text-[#1b2615] font-display">
                 {t.successTitle}
               </h3>
@@ -106,10 +101,6 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
                 <span className="text-[#64755c] flex items-center gap-1.5 shrink-0">
                   <MapPin className="w-4 h-4 text-[#d74428]" />
                   {currentLang === 'ne' ? 'डेलिभरी ठेगाना:' : 'Delivery Address:'}
-                </span>
-                <span className="font-semibold text-[#1b2615] text-right ml-4">
-                  {orderData.fullAddress}, {orderData.city}
-                  {orderData.landmark ? ` (${orderData.landmark})` : ''}
                 </span>
               </div>
 

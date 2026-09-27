@@ -1,7 +1,6 @@
 export type Language = 'ne' | 'en';
 
 export interface PackageTier {
-  id: string;
   name: {
     ne: string;
     en: string;
@@ -31,9 +30,6 @@ export interface PackageTier {
 export interface OrderFormData {
   fullName: string;
   phoneNumber: string;
-  city: string;
-  landmark: string;
   fullAddress: string;
   packageId: string;
-  deliveryNotes?: string;
 }

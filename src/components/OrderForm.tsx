@@ -1,32 +1,30 @@
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Language, OrderFormData, PackageTier } from "../types";
+import { translations } from "../data/translations";
+import { SuccessModal } from "./SuccessModal";
 import {
-    AlertCircle,
-    Banknote,
-    Box,
-    Boxes,
-    Building2,
-    Check,
-    Home,
-    Layers,
-    Lock,
-    MapPin,
-    Minus,
-    Package,
-    Phone,
-    Plus,
-    RefreshCw,
-    ShieldCheck,
-    ShoppingCart,
-    SlidersHorizontal,
-    Star,
-    Truck,
-    User,
-} from 'lucide-react';
-import React, { useState } from 'react';
-import bottleImage from '../assets/images/bottle.png';
-import { translations } from '../data/translations';
-import { Language, OrderFormData, PackageTier } from '../types';
-import { SuccessModal } from './SuccessModal';
+  ShoppingCart,
+  Truck,
+  Check,
+  Lock,
+  User,
+  Phone,
+  Home,
+  SlidersHorizontal,
+  Minus,
+  Plus,
+  ShieldCheck,
+  RefreshCw,
+  Star,
+  Layers,
+  Box,
+  Boxes,
+  AlertCircle,
+  Banknote,
+  Package,
+} from "lucide-react";
+import bottleImage from "../assets/images/bottle.png";
 
 interface OrderFormProps {
   currentLang: Language;
@@ -37,38 +35,40 @@ interface BottleOption {
   price: number;
   originalPrice: number;
   savings: number;
-  badgeType?: 'popular' | 'savings' | 'bestValue';
+  badgeType?: "popular" | "savings" | "bestValue";
 }
 
 export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
   const t = translations[currentLang].order;
 
-  // Selected quantity (defaults to 2 bottles matching orderform-3.jpg)
-  const [quantity, setQuantity] = useState<number>(2);
+  // Selected quantity (defaults to 1 bottle)
+  const [quantity, setQuantity] = useState<number>(1);
 
   const [formData, setFormData] = useState<OrderFormData>({
-    fullName: '',
-    phoneNumber: '',
-    city: '',
-    landmark: '',
-    fullAddress: '',
-    packageId: '2-bottles',
-    deliveryNotes: '',
+    fullName: "",
+    phoneNumber: "",
+    fullAddress: "",
+    packageId: "1-bottles",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submittedOrder, setSubmittedOrder] = useState<OrderFormData | null>(null);
+  const [submittedOrder, setSubmittedOrder] = useState<OrderFormData | null>(
+    null,
+  );
   const [submittedTier, setSubmittedTier] = useState<PackageTier | null>(null);
   const [orderModalOpen, setOrderModalOpen] = useState(false);
-  const [generatedOrderId, setGeneratedOrderId] = useState('');
 
-  // Fixed preset options from orderform-3.jpg
+  // Fixed preset options (1 and 2 bottles)
   const presetOptions: BottleOption[] = [
     { qty: 1, price: 2000, originalPrice: 2000, savings: 0 },
-    { qty: 2, price: 3500, originalPrice: 4000, savings: 500, badgeType: 'popular' },
-    { qty: 3, price: 5000, originalPrice: 6000, savings: 1000, badgeType: 'savings' },
-    { qty: 4, price: 6500, originalPrice: 8000 , savings: 1500, badgeType: 'bestValue' },
+    {
+      qty: 2,
+      price: 3500,
+      originalPrice: 4000,
+      savings: 500,
+      badgeType: "popular",
+    },
   ];
 
   // Dynamic pricing calculation
@@ -76,10 +76,13 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
     const preset = presetOptions.find((p) => p.qty === qty);
     if (preset) return preset;
 
-    // For custom quantities > 4
-    const unitPrice = 1625;
+    // For custom quantities > 2
+    const unitPrice = 1500;
+
     const originalPrice = qty * 2000;
+
     const price = qty * unitPrice;
+
     const savings = originalPrice - price;
     return { qty, price, originalPrice, savings };
   };
@@ -88,11 +91,24 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
 
   // Helper for Devanagari numerals
   const formatNumber = (num: number): string => {
-    if (currentLang === 'ne') {
-      const devanagariDigits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
-      return num.toLocaleString('en-IN').replace(/[0-9]/g, (d) => devanagariDigits[parseInt(d, 10)]);
+    if (currentLang === "ne") {
+      const devanagariDigits = [
+        "०",
+        "१",
+        "२",
+        "३",
+        "४",
+        "५",
+        "६",
+        "७",
+        "८",
+        "९",
+      ];
+      return num
+        .toLocaleString("en-IN")
+        .replace(/[0-9]/g, (d) => devanagariDigits[parseInt(d, 10)]);
     }
-    return num.toLocaleString('en-US');
+    return num.toLocaleString("en-US");
   };
 
   const handleQuantitySelect = (newQty: number) => {
@@ -106,23 +122,21 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
   };
 
   const handleInputChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-) => {
-  const { name, value } = e.target;
-
-  // Strip non-digits for the phone field only
-  const sanitizedValue = name === "phoneNumber" ? value.replace(/\D/g, "") : value;
-
-  setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
-
-  if (errors[name]) {
-    setErrors((prev) => {
-      const updated = { ...prev };
-      delete updated[name];
-      return updated;
-    });
-  }
-};
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    // Strip non-digits for phone number
+    const sanitizedValue =
+      name === "phoneNumber" ? value.replace(/\D/g, "") : value;
+    setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
+    if (errors[name]) {
+      setErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[name];
+        return updated;
+      });
+    }
+  };
 
   const validate = (): boolean => {
     const errs: Record<string, string> = {};
@@ -130,15 +144,11 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
       errs.fullName = t.errorRequired;
     }
 
-    const cleanPhone = formData.phoneNumber.replace(/[\s-]/g, '');
+    const cleanPhone = formData.phoneNumber.replace(/[\s-]/g, "");
     if (!cleanPhone) {
       errs.phoneNumber = t.errorRequired;
     } else if (!/^(98|97|96|\+977)?[0-9]{8,10}$/.test(cleanPhone)) {
       errs.phoneNumber = t.errorPhone;
-    }
-
-    if (!formData.city.trim()) {
-      errs.city = t.errorRequired;
     }
 
     if (!formData.fullAddress.trim()) {
@@ -150,94 +160,82 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!validate()) {
-    const firstError = Object.keys(errors)[0] || 'fullName';
-    const el = document.getElementById(firstError);
+    if (!validate()) {
+      const firstError = Object.keys(errors)[0] || "fullName";
+      const el = document.getElementById(firstError);
 
-    if (el) el.focus();
+      if (el) el.focus();
 
-    return;
-  }
-
-  setIsSubmitting(true);
-
-  try {
-    const randomId = Math.floor(
-      100000 + Math.random() * 900000
-    ).toString();
-
-    const currentTierSnapshot: PackageTier = {
-      id: `${quantity}-bottles`,
-      name: {
-        ne: `${formatNumber(quantity)} ${t.bottleUnit}`,
-        en: `${quantity} ${t.bottleUnit}`,
-      },
-      subtitle: {
-        ne: `${formatNumber(quantity * 150)} ग्राम`,
-        en: `${quantity * 150}g Total`,
-      },
-      bottles: quantity,
-      recommendedFor: {
-        ne: 'दैनिक आयुर्वेदिक हेरचाह',
-        en: 'Daily आयुर्वेदिक Care',
-      },
-      originalPrice: currentPricing.originalPrice,
-      price: currentPricing.price,
-      savings: currentPricing.savings,
-    };
-
-    const response = await fetch('/api/order', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        orderId: randomId,
-        fullName: formData.fullName,
-        phoneNumber: formData.phoneNumber,
-        city: formData.city,
-        landmark: formData.landmark,
-        fullAddress: formData.fullAddress,
-        quantity: quantity,
-        totalPrice: currentPricing.price,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      throw new Error(result.message || 'Failed to submit order');
+      return;
     }
 
-    setGeneratedOrderId(randomId);
-    setSubmittedOrder({ ...formData });
-    setSubmittedTier(currentTierSnapshot);
-    setOrderModalOpen(true);
+    setIsSubmitting(true);
 
-    setFormData({
-      fullName: '',
-      phoneNumber: '',
-      city: '',
-      landmark: '',
-      fullAddress: '',
-      packageId: '2-bottles',
-      deliveryNotes: '',
-    });
+    try {
+      const currentTierSnapshot: PackageTier = {
+        name: {
+          ne: `${formatNumber(quantity)} ${t.bottleUnit}`,
+          en: `${quantity} ${t.bottleUnit}`,
+        },
+        subtitle: {
+          ne: `${formatNumber(quantity * 150)} ग्राम`,
+          en: `${quantity * 150}g Total`,
+        },
+        bottles: quantity,
+        recommendedFor: {
+          ne: "दैनिक आयुर्वेदिक हेरचाह",
+          en: "Daily आयुर्वेदिक Care",
+        },
+        originalPrice: currentPricing.originalPrice,
+        price: currentPricing.price,
+        savings: currentPricing.savings,
+      };
 
-    setQuantity(2);
-    setErrors({});
-  } catch (error) {
-    console.error('Order submission failed:', error);
-    alert('Unable to submit order. Please try again.');
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+      const response = await fetch("/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          phoneNumber: formData.phoneNumber,
+          fullAddress: formData.fullAddress,
+          quantity: quantity,
+          totalPrice: currentPricing.price,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to submit order");
+      }
+
+      setSubmittedOrder({ ...formData });
+      setSubmittedTier(currentTierSnapshot);
+      setOrderModalOpen(true);
+
+      setFormData({
+        fullName: "",
+        phoneNumber: "",
+        fullAddress: "",
+        packageId: "2-bottles",
+      });
+
+      setQuantity(2);
+      setErrors({});
+    } catch (error) {
+      console.error("Order submission failed:", error);
+      alert("Unable to submit order. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // Adapter for SuccessModal
   const selectedTierAdapter: PackageTier = {
-    id: `${quantity}-bottles`,
     name: {
       ne: `${formatNumber(quantity)} ${t.bottleUnit}`,
       en: `${quantity} ${t.bottleUnit}`,
@@ -248,8 +246,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
     },
     bottles: quantity,
     recommendedFor: {
-      ne: 'दैनिक आयुर्वेदिक हेरचाह',
-      en: 'Daily Ayurvedic Care',
+      ne: "दैनिक आयुर्वेदिक हेरचाह",
+      en: "Daily Ayurvedic Care",
     },
     originalPrice: currentPricing.originalPrice,
     price: currentPricing.price,
@@ -257,18 +255,21 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
   };
 
   return (
-    <section id="order-form" className="py-20 sm:py-28 bg-gradient-to-b from-[#fdfbf7] via-[#f8f2e7] to-[#f2e7d8] relative overflow-hidden">
-      {/* Background warm saffron and light orange glow highlights */}
+    <section
+      id="order-form"
+      className="py-20 sm:py-28 bg-gradient-to-b from-[#fdfbf7] via-[#f8f2e7] to-[#f2e7d8] relative overflow-hidden"
+    >
+      {/* Background warm highlights */}
       <div className="absolute top-10 left-1/4 w-[500px] h-[500px] bg-[#fbdcbd]/40 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#fae2ce]/45 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header matching orderform-1.jpg */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.5, ease: 'easeOut' as const }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, ease: "easeOut" as const }}
           className="text-center max-w-3xl mx-auto space-y-3 mb-12 sm:mb-16"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#fbe3cb] shadow-2xs">
@@ -287,15 +288,15 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
           </p>
         </motion.div>
 
-        {/* 2-Column Checkout Layout (Swapped Sides: Summary on Left, Form on Right) */}
+        {/* 2-Column Checkout Layout */}
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-start">
-            {/* Left 5 Columns: Order Summary + What Happens Next (orderform-2.jpg) */}
+            {/* Left 5 Columns: Order Summary + What Happens Next */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: 'easeOut' as const }}
+              transition={{ duration: 0.6, ease: "easeOut" as const }}
               className="lg:col-span-5 space-y-6 lg:sticky lg:top-24"
             >
               {/* Order Summary Card */}
@@ -327,7 +328,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                         <Star key={i} className="w-3 h-3 fill-current" />
                       ))}
                       <Star className="w-3 h-3 fill-current opacity-80" />
-                      <span className="text-[#78716a] text-[11px] ml-1">{t.ratingText}</span>
+                      <span className="text-[#78716a] text-[11px] ml-1">
+                        {t.ratingText}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -378,7 +381,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                 </h4>
 
                 <div className="space-y-3 pt-1">
-                  {/* Step 1 */}
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-[#e3f6ea] text-[#1c663b] flex items-center justify-center shrink-0">
                       <Phone className="w-4 h-4" />
@@ -388,7 +390,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                     </span>
                   </div>
 
-                  {/* Step 2 */}
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-[#e2f0f7] text-[#2b719b] flex items-center justify-center shrink-0">
                       <Package className="w-4 h-4" />
@@ -398,7 +399,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                     </span>
                   </div>
 
-                  {/* Step 3 */}
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-[#fde9de] text-[#ea6427] flex items-center justify-center shrink-0">
                       <Banknote className="w-4 h-4 text-[#ea6427]" />
@@ -427,18 +427,17 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
               </div>
             </motion.div>
 
-            {/* Right 7 Columns: JOINED SINGLE UNIFIED CARD containing Quantity Selection AND Delivery Details Form */}
+            {/* Right 7 Columns: Package Selection & Streamlined Delivery Form */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: 'easeOut' as const }}
+              transition={{ duration: 0.6, ease: "easeOut" as const }}
               className="lg:col-span-7"
             >
               <div className="bg-[#ffffff] rounded-[28px] p-6 sm:p-8 border border-[#e6dcce] shadow-[0_2px_8px_rgba(90,70,40,0.03)] space-y-7">
                 {/* Part 1: Package / Quantity Selection */}
                 <div className="space-y-5">
-                  {/* Header with Orange Boxes Icon */}
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 rounded-lg bg-[#fde9de] flex items-center justify-center text-[#f15a24]">
                       <Boxes className="w-3.5 h-3.5" />
@@ -448,23 +447,22 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                     </h3>
                   </div>
 
-                  {/* 4 Quantity Cards in a Row */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-3.5 pt-2">
+                  {/* 2 Quantity Cards in a Row */}
+                  <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 pt-2">
                     {presetOptions.map((opt) => {
                       const isSelected = quantity === opt.qty;
 
-                      // Badge details
-                      let badgeLabel = '';
-                      let badgeBg = '';
-                      if (opt.badgeType === 'popular') {
+                      let badgeLabel = "";
+                      let badgeBg = "";
+                      if (opt.badgeType === "popular") {
                         badgeLabel = t.popularBadge;
-                        badgeBg = 'bg-[#f15a24] text-white';
-                      } else if (opt.badgeType === 'savings') {
+                        badgeBg = "bg-[#f15a24] text-white";
+                      } else if (opt.badgeType === "savings") {
                         badgeLabel = t.savingsBadge;
-                        badgeBg = 'bg-[#0e8a8a] text-white';
-                      } else if (opt.badgeType === 'bestValue') {
+                        badgeBg = "bg-[#0e8a8a] text-white";
+                      } else if (opt.badgeType === "bestValue") {
                         badgeLabel = t.bestValueBadge;
-                        badgeBg = 'bg-[#156e72] text-white';
+                        badgeBg = "bg-[#156e72] text-white";
                       }
 
                       return (
@@ -475,11 +473,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                           whileTap={{ scale: 0.97 }}
                           className={`relative rounded-2xl p-3.5 pt-4 pb-4 border cursor-pointer transition-all duration-200 flex flex-col items-center text-center justify-between min-h-[145px] ${
                             isSelected
-                              ? 'border-[#f15a24] ring-2 ring-[#f15a24]/20 bg-[#ffffff] shadow-sm'
-                              : 'border-[#e6dcce] bg-[#fdfbf7]/60 hover:border-[#d9cbba] hover:bg-[#ffffff]'
+                              ? "border-[#f15a24] ring-2 ring-[#f15a24]/20 bg-[#ffffff] shadow-sm"
+                              : "border-[#e6dcce] bg-[#fdfbf7]/60 hover:border-[#d9cbba] hover:bg-[#ffffff]"
                           }`}
                         >
-                          {/* Top Badge (if any) */}
                           {badgeLabel && (
                             <div
                               className={`absolute -top-2.5 inset-x-0 mx-auto w-max px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-2xs ${badgeBg}`}
@@ -488,14 +485,12 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                             </div>
                           )}
 
-                          {/* Top Right Checkmark Badge for Selected Item */}
                           {isSelected && (
                             <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#f15a24] text-white flex items-center justify-center">
                               <Check className="w-2.5 h-2.5 stroke-[3]" />
                             </div>
                           )}
 
-                          {/* Icon Representation */}
                           <div className="my-1.5 flex items-center justify-center">
                             {opt.qty === 1 && (
                               <div className="w-8 h-8 rounded-lg bg-[#f1ede6] flex items-center justify-center text-[#78716a]">
@@ -519,12 +514,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                             )}
                           </div>
 
-                          {/* Quantity Title */}
                           <span className="text-sm font-bold text-[#1e1b18]">
                             {formatNumber(opt.qty)} {t.bottleUnit}
                           </span>
 
-                          {/* Pricing */}
                           <div className="mt-1">
                             {opt.originalPrice > opt.price && (
                               <span className="text-[11px] text-[#9ca3af] line-through mr-1 font-mono">
@@ -536,7 +529,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                             </span>
                           </div>
 
-                          {/* Bottom Radio Indicator */}
                           <div className="mt-2.5">
                             {isSelected ? (
                               <div className="w-4 h-4 rounded-full border-2 border-[#f15a24] flex items-center justify-center">
@@ -582,12 +574,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                   </div>
                 </div>
 
-                {/* Seamless Divider joining the two sections */}
                 <div className="border-t border-[#f1ede6]" />
 
-                {/* Part 2: Delivery Details Form */}
+                {/* Part 2: Streamlined Delivery Details Form (Clean 3 essential fields) */}
                 <div className="space-y-5">
-                  {/* Header with Green Truck Icon */}
                   <div className="flex items-center gap-2">
                     <Truck className="w-5 h-5 text-[#235828]" />
                     <h3 className="text-base sm:text-lg font-bold text-[#1e1b18]">
@@ -595,47 +585,52 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                     </h3>
                   </div>
 
-                  {/* Input Fields */}
                   <div className="space-y-4">
-                    {/* Full Name */}
-                    <div className="space-y-1.5">
-                      <label htmlFor="fullName" className="text-xs sm:text-[13px] font-semibold text-[#1e1b18] block">
-                        {t.fullNameLabel}
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8e857c]">
-                          <User className="w-4 h-4" />
-                        </div>
-                        <input
-                          type="text"
-                          id="fullName"
-                          name="fullName"
-                          value={formData.fullName}
-                          onChange={handleInputChange}
-                          autoComplete="name"
-                          aria-required="true"
-                          aria-invalid={!!errors.fullName}
-                          placeholder={t.fullNamePlaceholder}
-                          className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs sm:text-sm text-[#1e1b18] bg-[#fbf8f2] focus:bg-white focus:outline-none transition-all placeholder:text-[#a0978e] ${
-                            errors.fullName
-                              ? 'border-[#d74428] focus:ring-2 focus:ring-[#d74428]/20'
-                              : 'border-[#e6dcce] focus:border-[#f15a24] focus:ring-2 focus:ring-[#f15a24]/20'
-                          }`}
-                        />
-                      </div>
-                      {errors.fullName && (
-                        <p className="text-xs text-[#d74428] flex items-center gap-1 mt-1">
-                          <AlertCircle className="w-3.5 h-3.5" />
-                          {errors.fullName}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Phone & City Grid */}
+                    {/* Full Name & Phone Number in a clean 2-column grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {/* Full Name */}
+                      <div className="space-y-1.5">
+                        <label
+                          htmlFor="fullName"
+                          className="text-xs sm:text-[13px] font-semibold text-[#1e1b18] block"
+                        >
+                          {t.fullNameLabel}
+                        </label>
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8e857c]">
+                            <User className="w-4 h-4" />
+                          </div>
+                          <input
+                            type="text"
+                            id="fullName"
+                            name="fullName"
+                            value={formData.fullName}
+                            onChange={handleInputChange}
+                            autoComplete="name"
+                            aria-required="true"
+                            aria-invalid={!!errors.fullName}
+                            placeholder={t.fullNamePlaceholder}
+                            className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs sm:text-sm text-[#1e1b18] bg-[#fbf8f2] focus:bg-white focus:outline-none transition-all placeholder:text-[#a0978e] ${
+                              errors.fullName
+                                ? "border-[#d74428] focus:ring-2 focus:ring-[#d74428]/20"
+                                : "border-[#e6dcce] focus:border-[#f15a24] focus:ring-2 focus:ring-[#f15a24]/20"
+                            }`}
+                          />
+                        </div>
+                        {errors.fullName && (
+                          <p className="text-xs text-[#d74428] flex items-center gap-1 mt-1">
+                            <AlertCircle className="w-3.5 h-3.5" />
+                            {errors.fullName}
+                          </p>
+                        )}
+                      </div>
+
                       {/* Phone Number */}
                       <div className="space-y-1.5">
-                        <label htmlFor="phoneNumber" className="text-xs sm:text-[13px] font-semibold text-[#1e1b18] block">
+                        <label
+                          htmlFor="phoneNumber"
+                          className="text-xs sm:text-[13px] font-semibold text-[#1e1b18] block"
+                        >
                           {t.phoneLabel}
                         </label>
                         <div className="relative">
@@ -645,8 +640,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                           <input
                             type="tel"
                             id="phoneNumber"
-                             maxLength={10}
-                             inputMode="numeric"
+                            maxLength={10}
+                            inputMode="numeric"
                             name="phoneNumber"
                             value={formData.phoneNumber}
                             onChange={handleInputChange}
@@ -656,8 +651,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                             placeholder={t.phonePlaceholder}
                             className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs sm:text-sm text-[#1e1b18] bg-[#fbf8f2] focus:bg-white focus:outline-none transition-all placeholder:text-[#a0978e] ${
                               errors.phoneNumber
-                                ? 'border-[#d74428] focus:ring-2 focus:ring-[#d74428]/20'
-                              : 'border-[#e6dcce] focus:border-[#f15a24] focus:ring-2 focus:ring-[#f15a24]/20'
+                                ? "border-[#d74428] focus:ring-2 focus:ring-[#d74428]/20"
+                                : "border-[#e6dcce] focus:border-[#f15a24] focus:ring-2 focus:ring-[#f15a24]/20"
                             }`}
                           />
                         </div>
@@ -668,72 +663,14 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                           </p>
                         )}
                       </div>
-
-                      {/* City */}
-                      <div className="space-y-1.5">
-                        <label htmlFor="city" className="text-xs sm:text-[13px] font-semibold text-[#1e1b18] block">
-                          {t.cityLabel}
-                        </label>
-                        <div className="relative">
-                          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8e857c]">
-                            <Building2 className="w-4 h-4" />
-                          </div>
-                          <input
-                            type="text"
-                            id="city"
-                            name="city"
-                            value={formData.city}
-                            onChange={handleInputChange}
-                            autoComplete="address-level2"
-                            aria-required="true"
-                            aria-invalid={!!errors.city}
-                            placeholder={t.cityPlaceholder}
-                            className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs sm:text-sm text-[#1e1b18] bg-[#fbf8f2] focus:bg-white focus:outline-none transition-all placeholder:text-[#a0978e] ${
-                              errors.city
-                                ? 'border-[#d74428] focus:ring-2 focus:ring-[#d74428]/20'
-                                : 'border-[#e6dcce] focus:border-[#f15a24] focus:ring-2 focus:ring-[#f15a24]/20'
-                            }`}
-                          />
-                        </div>
-                        {errors.city && (
-                          <p className="text-xs text-[#d74428] flex items-center gap-1 mt-1">
-                            <AlertCircle className="w-3.5 h-3.5" />
-                            {errors.city}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Landmark */}
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <label htmlFor="landmark" className="text-xs sm:text-[13px] font-semibold text-[#1e1b18]">
-                          {t.landmarkLabel}
-                        </label>
-                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#f1ede6] text-[#78716a] font-normal">
-                          {t.landmarkOptional}
-                        </span>
-                      </div>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8e857c]">
-                          <MapPin className="w-4 h-4" />
-                        </div>
-                        <input
-                          type="text"
-                          id="landmark"
-                          name="landmark"
-                          value={formData.landmark}
-                          onChange={handleInputChange}
-                          autoComplete="address-line2"
-                          placeholder={t.landmarkPlaceholder}
-                          className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#e6dcce] text-xs sm:text-sm text-[#1e1b18] bg-[#fbf8f2] focus:bg-white focus:border-[#f15a24] focus:ring-2 focus:ring-[#f15a24]/20 focus:outline-none transition-all placeholder:text-[#a0978e]"
-                        />
-                      </div>
                     </div>
 
                     {/* Full Address */}
                     <div className="space-y-1.5">
-                      <label htmlFor="fullAddress" className="text-xs sm:text-[13px] font-semibold text-[#1e1b18] block">
+                      <label
+                        htmlFor="fullAddress"
+                        className="text-xs sm:text-[13px] font-semibold text-[#1e1b18] block"
+                      >
                         {t.addressLabel}
                       </label>
                       <div className="relative">
@@ -752,8 +689,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                           placeholder={t.addressPlaceholder}
                           className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs sm:text-sm text-[#1e1b18] bg-[#fbf8f2] focus:bg-white focus:outline-none transition-all placeholder:text-[#a0978e] ${
                             errors.fullAddress
-                              ? 'border-[#d74428] focus:ring-2 focus:ring-[#d74428]/20'
-                              : 'border-[#e6dcce] focus:border-[#f15a24] focus:ring-2 focus:ring-[#f15a24]/20'
+                              ? "border-[#d74428] focus:ring-2 focus:ring-[#d74428]/20"
+                              : "border-[#e6dcce] focus:border-[#f15a24] focus:ring-2 focus:ring-[#f15a24]/20"
                           }`}
                         />
                       </div>
@@ -783,9 +720,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                     <Lock className="w-4 h-4" />
                     <span>
                       {isSubmitting
-                        ? currentLang === 'ne'
-                          ? 'अर्डर पठाउँदै...'
-                          : 'Submitting Order...'
+                        ? currentLang === "ne"
+                          ? "अर्डर पठाउँदै..."
+                          : "Submitting Order..."
                         : `${t.submitBtn} — रु. ${formatNumber(currentPricing.price)} →`}
                     </span>
                   </motion.button>
@@ -809,7 +746,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
         orderData={submittedOrder}
         selectedTier={submittedTier || selectedTierAdapter}
         currentLang={currentLang}
-        orderId={generatedOrderId}
       />
     </section>
   );
