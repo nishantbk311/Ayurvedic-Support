@@ -36,11 +36,8 @@ export default async function handler(
     const response = await fetch(scriptUrl, {
       method: 'POST',
       body: new URLSearchParams({
-        orderId: String(orderId),
         fullName: String(fullName),
         phoneNumber: String(phoneNumber),
-        city: String(city),
-        landmark: String(landmark),
         fullAddress: String(fullAddress),
         quantity: String(quantity),
         totalPrice: String(totalPrice),
