@@ -149,59 +149,92 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) {
-      const firstError = Object.keys(errors)[0] || 'fullName';
-      const el = document.getElementById(firstError);
-      if (el) el.focus();
-      return;
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!validate()) {
+    const firstError = Object.keys(errors)[0] || 'fullName';
+    const el = document.getElementById(firstError);
+
+    if (el) el.focus();
+
+    return;
+  }
+
+  setIsSubmitting(true);
+
+  try {
+    const randomId = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
+
+    const currentTierSnapshot: PackageTier = {
+      id: `${quantity}-bottles`,
+      name: {
+        ne: `${formatNumber(quantity)} ${t.bottleUnit}`,
+        en: `${quantity} ${t.bottleUnit}`,
+      },
+      subtitle: {
+        ne: `${formatNumber(quantity * 150)} ग्राम`,
+        en: `${quantity * 150}g Total`,
+      },
+      bottles: quantity,
+      recommendedFor: {
+        ne: 'दैनिक आयुर्वेदिक हेरचाह',
+        en: 'Daily आयुर्वेदिक Care',
+      },
+      originalPrice: currentPricing.originalPrice,
+      price: currentPricing.price,
+      savings: currentPricing.savings,
+    };
+
+    const response = await fetch('/api/order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orderId: randomId,
+        fullName: formData.fullName,
+        phoneNumber: formData.phoneNumber,
+        city: formData.city,
+        landmark: formData.landmark,
+        fullAddress: formData.fullAddress,
+        quantity: quantity,
+        totalPrice: currentPricing.price,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || 'Failed to submit order');
     }
 
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      const randomId = Math.floor(100000 + Math.random() * 900000).toString();
-      const currentTierSnapshot: PackageTier = {
-        id: `${quantity}-bottles`,
-        name: {
-          ne: `${formatNumber(quantity)} ${t.bottleUnit}`,
-          en: `${quantity} ${t.bottleUnit}`,
-        },
-        subtitle: {
-          ne: `${formatNumber(quantity * 150)} ग्राम`,
-          en: `${quantity * 150}g Total`,
-        },
-        bottles: quantity,
-        recommendedFor: {
-          ne: 'दैनिक आयुर्वेदिक हेरचाह',
-          en: 'Daily आयुर्वेदिक Care',
-        },
-        originalPrice: currentPricing.originalPrice,
-        price: currentPricing.price,
-        savings: currentPricing.savings,
-      };
+    setGeneratedOrderId(randomId);
+    setSubmittedOrder({ ...formData });
+    setSubmittedTier(currentTierSnapshot);
+    setOrderModalOpen(true);
 
-      setGeneratedOrderId(randomId);
-      setSubmittedOrder({ ...formData });
-      setSubmittedTier(currentTierSnapshot);
-      setOrderModalOpen(true);
+    setFormData({
+      fullName: '',
+      phoneNumber: '',
+      city: '',
+      landmark: '',
+      fullAddress: '',
+      packageId: '2-bottles',
+      deliveryNotes: '',
+    });
 
-      // Clear all form fields after completing order
-      setFormData({
-        fullName: '',
-        phoneNumber: '',
-        city: '',
-        landmark: '',
-        fullAddress: '',
-        packageId: '2-bottles',
-        deliveryNotes: '',
-      });
-      setQuantity(2);
-      setErrors({});
-    }, 600);
-  };
-
+    setQuantity(2);
+    setErrors({});
+  } catch (error) {
+    console.error('Order submission failed:', error);
+    alert('Unable to submit order. Please try again.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   // Adapter for SuccessModal
   const selectedTierAdapter: PackageTier = {
     id: `${quantity}-bottles`,
