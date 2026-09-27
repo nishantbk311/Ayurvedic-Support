@@ -68,7 +68,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
     { qty: 1, price: 2000, originalPrice: 2000, savings: 0 },
     { qty: 2, price: 3500, originalPrice: 4000, savings: 500, badgeType: 'popular' },
     { qty: 3, price: 5000, originalPrice: 6000, savings: 1000, badgeType: 'savings' },
-    { qty: 4, price: 8000, originalPrice:6500 , savings: 1500, badgeType: 'bestValue' },
+    { qty: 4, price: 6500, originalPrice: 8000 , savings: 1500, badgeType: 'bestValue' },
   ];
 
   // Dynamic pricing calculation
