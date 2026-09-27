@@ -102,6 +102,9 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
                   <MapPin className="w-4 h-4 text-[#d74428]" />
                   {currentLang === 'ne' ? 'डेलिभरी ठेगाना:' : 'Delivery Address:'}
                 </span>
+                  <span className="font-semibold text-[#1b2615]">
+                  {orderData.fullAddress}
+                </span>
               </div>
 
               <div className="flex items-center justify-between pt-1 text-sm font-bold">
