@@ -23,11 +23,8 @@ export default async function handler(
 
   try {
     const {
-      orderId,
       fullName,
       phoneNumber,
-      city,
-      landmark,
       fullAddress,
       quantity,
       totalPrice,
