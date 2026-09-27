@@ -65,10 +65,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
 
   // Fixed preset options from orderform-3.jpg
   const presetOptions: BottleOption[] = [
-    { qty: 1, price: 2000, originalPrice: 999, savings: 0 },
-    { qty: 2, price: 1798, originalPrice: 1998, savings: 200, badgeType: 'popular' },
-    { qty: 3, price: 2547, originalPrice: 2997, savings: 450, badgeType: 'savings' },
-    { qty: 4, price: 3196, originalPrice: 3996, savings: 800, badgeType: 'bestValue' },
+    { qty: 1, price: 2000, originalPrice: 2000, savings: 0 },
+    { qty: 2, price: 3500, originalPrice: 4000, savings: 500, badgeType: 'popular' },
+    { qty: 3, price: 5000, originalPrice: 6000, savings: 1000, badgeType: 'savings' },
+    { qty: 4, price: 8000, originalPrice:6500 , savings: 1500, badgeType: 'bestValue' },
   ];
 
   // Dynamic pricing calculation
@@ -306,7 +306,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                   <div className="flex justify-between items-center text-[#635a52]">
                     <span>{t.unitPriceLabel}</span>
                     <span className="font-mono font-semibold text-[#1e1b18]">
-                      रु. {formatNumber(999)}
+                      रु. {formatNumber(2000)}
                     </span>
                   </div>
 

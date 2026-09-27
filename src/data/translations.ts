@@ -120,7 +120,7 @@ export const translations = {
         },
         {
           num: '३',
-          text: 'दिनको २ पटक, खाना खाएपछि सेवन गर्नुहोस्।',
+          text: 'दिनको १ पटक, खाना खाएपछि सेवन गर्नुहोस्।',
         },
         {
           num: '४',
@@ -437,7 +437,7 @@ export const translations = {
         },
         {
           num: '3',
-          text: 'Take twice daily, after meals.',
+          text: 'Take once daily, after a meal.',
         },
         {
           num: '4',
