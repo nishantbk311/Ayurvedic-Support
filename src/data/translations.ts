@@ -412,12 +412,12 @@ export const translations = {
           desc: 'Known in Ayurveda to assist in maintaining the body’s natural fluid balance.',
         },
         {
-          name: 'Varun',
+          name: 'Varuna',
           weight: '20g',
           desc: 'Traditional tree bark traditionally prized for bladder and urinary channel care.',
         },
         {
-          name: 'Pashanbhed',
+          name: 'Pashanabheda',
           weight: '40g',
           desc: 'The master Ayurvedic botanical renowned for renal and stone-flushing care.',
         },

@@ -4,6 +4,11 @@ import React from 'react';
 import { translations } from '../data/translations';
 import { Language } from '../types';
 
+import gokshuraImg from '../assets/images/gokshura.png';
+import punarnavaImg from '../assets/images/punarnava.png';
+import pashanbhedImg from '../assets/images/pashanabheda.png';
+import varunaImg from '../assets/images/varuna.png';
+
 interface IngredientsProps {
   currentLang: Language;
 }
@@ -12,39 +17,54 @@ export const Ingredients: React.FC<IngredientsProps> = ({ currentLang }) => {
   const t = translations[currentLang].ingredients;
 
   const herbVisuals = [
-    // 1. गोखरु (Gokshura)
-    {
-      bg: 'bg-[#f4be9b]',
-      render: () => (
-        <Flower2 className="w-12 h-12 text-[#934611] drop-shadow-xs" />
-      ),
-    },
+  // 1. गोखरु (Gokshura)
+  {
+    bg: "bg-[#f4be9b]",
+    render: () => (
+      <img
+        src={gokshuraImg}
+        alt="गोखरु"
+        className="w-12 h-12 object-contain drop-shadow-xs"
+      />
+    ),
+  },
 
-    // 2. पुनर्नवा (Punarnava)
-    {
-      bg: 'bg-transparent',
-      render: () => (
-        <Leaf className="w-12 h-12 text-[#2e7d32] drop-shadow-xs" />
-      ),
-    },
+  // 2. पुनर्नवा (Punarnava)
+  {
+    bg: "bg-[#f4be9b]",
+    render: () => (
+      <img
+        src={punarnavaImg}
+        alt="पुनर्नवा"
+        className="w-12 h-12 object-contain drop-shadow-xs"
+      />
+    ),
+  },
 
-    // 3. वरुण (Varun Bark)
-    {
-      bg: 'bg-transparent',
-      render: () => (
-        <Wheat className="w-12 h-12 text-[#689f38] drop-shadow-xs" />
-      ),
-    },
+  // 3. वरुण (Varun Bark)
+  {
+    bg: "bg-[#f4be9b]",
+    render: () => (
+      <img
+        src={varunaImg}
+        alt="वरुण"
+        className="w-12 h-12 object-contain drop-shadow-xs"
+      />
+    ),
+  },
 
-    // 4. पाषाणभेद (Pashanbhed Root & Leaf)
-    {
-      bg: 'bg-[#f4ede4]',
-      render: () => (
-        <Sprout className="w-12 h-12 text-[#8d4c2b] drop-shadow-xs" />
-      ),
-    },
-  ];
-
+  // 4. पाषाणभेद (Pashanbhed Root & Leaf)
+  {
+   bg: "bg-[#f4be9b]",
+    render: () => (
+      <img
+        src={pashanbhedImg}
+        alt="पाषाणभेद"
+        className="w-12 h-12 object-contain drop-shadow-xs"
+      />
+    ),
+  },
+];
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

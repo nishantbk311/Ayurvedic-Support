@@ -77,8 +77,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
     if (preset) return preset;
 
     // For custom quantities > 4
-    const unitPrice = 799;
-    const originalPrice = qty * 999;
+    const unitPrice = 1625;
+    const originalPrice = qty * 2000;
     const price = qty * unitPrice;
     const savings = originalPrice - price;
     return { qty, price, originalPrice, savings };
