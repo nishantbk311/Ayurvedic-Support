@@ -1,0 +1,17 @@
+{
+  "name": "Ayurvedic Support - Kidney Stone Herbal Churna",
+  "short_name": "Ayurvedic Support",
+  "description": "Premium Ayurvedic Herbal Churna formulated with potent Himalayan herbs for natural kidney stone breakdown and urinary wellness.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf8f5",
+  "theme_color": "#f15a24",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
