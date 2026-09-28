@@ -13,8 +13,10 @@ import { Warning } from './components/Warning';
 import { OrderForm } from './components/OrderForm';
 import { FinalCTA } from './components/FinalCTA';
 import { Footer } from './components/Footer';
-import { WhatsAppButton } from './components/WhatsAppButton';
 import { ShoppingBag, PhoneCall } from 'lucide-react';
+
+import { scrollToOrder } from './utils/scroll';
+
 
 export default function App() {
   // Nepali is the default language as strictly requested
@@ -39,12 +41,6 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToOrder = () => {
-    const el = document.getElementById('order-form');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#faf8f5] text-[#222b1c] font-sans antialiased">
@@ -87,9 +83,7 @@ export default function App() {
       {/* 11. Footer */}
       <Footer currentLang={currentLang} />
 
-      {/* Floating WhatsApp Quick Consultation Button & Delayed Welcome Popup */}
-      <WhatsAppButton currentLang={currentLang} />
-
+  
       {/* Mobile Sticky Action Bar - Max 10% viewport height, strictly compliant with 15% cap */}
       <AnimatePresence>
         {showStickyBottom && (

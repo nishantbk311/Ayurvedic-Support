@@ -353,12 +353,14 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                     </span>
                   </div>
 
-                  <div className="flex justify-between items-center text-[#235828] font-semibold">
-                    <span>{t.savingsLabel}</span>
-                    <span className="font-mono">
-                      रु. {formatNumber(currentPricing.savings)}
-                    </span>
-                  </div>
+                  {currentPricing.savings > 0 && (
+                    <div className="flex justify-between items-center text-[#235828] font-semibold">
+                      <span>{t.savingsLabel}</span>
+                      <span className="font-mono">
+                        रु. {formatNumber(currentPricing.savings)}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="border-t border-[#e6dcce]" />
@@ -435,7 +437,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
               transition={{ duration: 0.6, ease: "easeOut" as const }}
               className="lg:col-span-7"
             >
-              <div className="bg-[#ffffff] rounded-[28px] p-6 sm:p-8 border border-[#e6dcce] shadow-[0_2px_8px_rgba(90,70,40,0.03)] space-y-7">
+                <div
+                id="order-packages"
+                className="scroll-mt-20 sm:scroll-mt-24 bg-[#ffffff] rounded-[28px] p-6 sm:p-8 border border-[#e6dcce] shadow-[0_2px_8px_rgba(90,70,40,0.03)] space-y-7"
+              >
                 {/* Part 1: Package / Quantity Selection */}
                 <div className="space-y-5">
                   <div className="flex items-center gap-2">

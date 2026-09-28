@@ -4,6 +4,8 @@ import { Language } from '../types';
 import { translations } from '../data/translations';
 import { Truck, Star, Leaf, ShieldCheck } from 'lucide-react';
 import { FaMortarPestle } from 'react-icons/fa6';
+import { scrollToOrder } from '../utils/scroll';
+
 
 // =========================================================================
 // BOTTLE IMAGE:
@@ -45,13 +47,6 @@ export const Hero: React.FC<HeroProps> = ({ currentLang }) => {
       animClass: 'animate-orbit-4',
     },
   ];
-
-  const scrollToOrder = () => {
-    const el = document.getElementById('order-form');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   const containerVariants = {
     hidden: { opacity: 0 },

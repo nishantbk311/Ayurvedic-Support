@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import logo from '../assets/images/logo.png';
 import { translations } from "../data/translations";
 import { Language } from "../types";
+import { scrollToOrder } from "../utils/scroll";
 
 
 interface NavbarProps {
@@ -27,11 +28,16 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+ 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
+    if (id === 'order-form') {
+      scrollToOrder();
+      return;
+    }
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 

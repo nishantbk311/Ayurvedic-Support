@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Phone, ShoppingCart } from 'lucide-react';
 import React from 'react';
-import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from 'react-icons/fa6';
 import { translations } from '../data/translations';
 import { Language } from '../types';
 
@@ -106,52 +105,7 @@ export const Footer: React.FC<FooterProps> = ({ currentLang }) => {
               {t.brandDesc}
             </p>
 
-            {/* 4 Circular Social Icons */}
-            <div className="flex items-center gap-2.5 pt-1">
-              {/* Facebook */}
-              <motion.a
-                href="#facebook"
-                aria-label="Facebook"
-                whileHover={{ scale: 1.15, backgroundColor: '#f15a24', color: '#ffffff' }}
-                whileTap={{ scale: 0.9 }}
-                className="w-8 h-8 rounded-full bg-[#352f2a] text-[#cfc7bf] flex items-center justify-center transition-colors cursor-pointer text-xs font-bold"
-              >
-                <FaFacebookF className="w-3.5 h-3.5" />
-              </motion.a>
-
-              {/* Instagram */}
-              <motion.a
-                href="#instagram"
-                aria-label="Instagram"
-                whileHover={{ scale: 1.15, backgroundColor: '#f15a24', color: '#ffffff' }}
-                whileTap={{ scale: 0.9 }}
-                className="w-8 h-8 rounded-full bg-[#352f2a] text-[#cfc7bf] flex items-center justify-center transition-colors cursor-pointer"
-              >
-                <FaInstagram className="w-3.5 h-3.5" />
-              </motion.a>
-
-              {/* TikTok */}
-              <motion.a
-                href="#tiktok"
-                aria-label="TikTok"
-                whileHover={{ scale: 1.15, backgroundColor: '#f15a24', color: '#ffffff' }}
-                whileTap={{ scale: 0.9 }}
-                className="w-8 h-8 rounded-full bg-[#352f2a] text-[#cfc7bf] flex items-center justify-center transition-colors cursor-pointer text-xs font-bold"
-              >
-                <FaTiktok className="w-3.5 h-3.5" />
-              </motion.a>
-
-              {/* WhatsApp */}
-              <motion.a
-                href="#whatsapp"
-                aria-label="WhatsApp"
-                whileHover={{ scale: 1.15, backgroundColor: '#f15a24', color: '#ffffff' }}
-                whileTap={{ scale: 0.9 }}
-                className="w-8 h-8 rounded-full bg-[#352f2a] text-[#cfc7bf] flex items-center justify-center transition-colors cursor-pointer"
-              >
-                <FaWhatsapp className="w-3.5 h-3.5" />
-              </motion.a>
-            </div>
+            
           </motion.div>
 
           {/* Column 2: Quick Links (lg:col-span-2) */}
