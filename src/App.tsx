@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Language } from './types';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { Banner } from './components/Banner';
 import { Benefits } from './components/Benefits';
 import { Ingredients } from './components/Ingredients';
 import { HowToUse } from './components/HowToUse';
@@ -51,9 +50,6 @@ export default function App() {
       <main className="flex-1">
         {/* 2. Hero */}
         <Hero currentLang={currentLang} />
-
-        {/* 3. Banner */}
-        <Banner currentLang={currentLang} />
 
         {/* 4. Benefits */}
         <Benefits currentLang={currentLang} />
