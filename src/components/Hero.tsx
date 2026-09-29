@@ -125,6 +125,8 @@ export const Hero: React.FC<HeroProps> = ({ currentLang }) => {
                   width="32"
                   height="32"
                   loading="lazy"
+                    onContextMenu={(e) => e.preventDefault()}
+                  
                   decoding="async"
                   className="w-8 h-8 rounded-full border-2 border-white object-cover shadow-2xs"
                   referrerPolicy="no-referrer"
@@ -134,6 +136,7 @@ export const Hero: React.FC<HeroProps> = ({ currentLang }) => {
                   alt="Verified User Ram"
                   width="32"
                   height="32"
+                    onContextMenu={(e) => e.preventDefault()}
                   loading="lazy"
                   decoding="async"
                   className="w-8 h-8 rounded-full border-2 border-white object-cover shadow-2xs"
@@ -146,6 +149,7 @@ export const Hero: React.FC<HeroProps> = ({ currentLang }) => {
                   height="32"
                   loading="lazy"
                   decoding="async"
+                    onContextMenu={(e) => e.preventDefault()}
                   className="w-8 h-8 rounded-full border-2 border-white object-cover shadow-2xs"
                   referrerPolicy="no-referrer"
                 />
@@ -262,6 +266,7 @@ export const Hero: React.FC<HeroProps> = ({ currentLang }) => {
                           alt={herb.name}
                           width="80"
                           height="80"
+                            onContextMenu={(e) => e.preventDefault()}
                           loading="lazy"
                           decoding="async"
                           className="w-full h-full object-cover rounded-full"
@@ -310,6 +315,7 @@ export const Hero: React.FC<HeroProps> = ({ currentLang }) => {
                       alt="Kidney Stone Herbal Churna Bottle Packaging"
                       width="320"
                       height="430"
+                        onContextMenu={(e) => e.preventDefault()}
                       fetchPriority="high"
                       decoding="async"
                       className="max-h-[250px] sm:max-h-[310px] lg:max-h-[430px] w-auto object-contain filter drop-shadow-2xl"

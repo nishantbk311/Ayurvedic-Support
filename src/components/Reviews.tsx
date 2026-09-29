@@ -101,6 +101,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ currentLang }) => {
                     src={review.avatar}
                     alt={review.name}
                     width="40"
+                      onContextMenu={(e) => e.preventDefault()}
                     height="40"
                     className="w-10 h-10 rounded-full object-cover border border-[#e6dcce] shadow-2xs shrink-0"
                     referrerPolicy="no-referrer"

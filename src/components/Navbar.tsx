@@ -73,6 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <img
               src={logo}
               alt="Ayurvedic Support"
+                onContextMenu={(e) => e.preventDefault()}
               className="h-9 sm:h-12 w-auto object-contain"
             />
           </motion.a>

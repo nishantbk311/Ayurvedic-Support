@@ -18,6 +18,12 @@
   }
 }
 
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
 .text-balance {
   text-wrap: balance;
 }

@@ -309,6 +309,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ currentLang }) => {
                       alt="Kidney Stone Churna Bottle"
                       width="64"
                       height="64"
+                        onContextMenu={(e) => e.preventDefault()}
                       loading="lazy"
                       decoding="async"
                       className="max-h-full max-w-full object-contain filter drop-shadow-sm"

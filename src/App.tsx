@@ -54,6 +54,10 @@ export default function App() {
         {/* 4. Benefits */}
         <Benefits currentLang={currentLang} />
 
+
+        {/* 8. Order Form */}
+        <OrderForm currentLang={currentLang} />
+        
         {/* 5. Ingredients Used */}
         <Ingredients currentLang={currentLang} />
 
@@ -62,9 +66,6 @@ export default function App() {
 
         {/* 7. Reviews */}
         <Reviews currentLang={currentLang} />
-
-        {/* 8. Order Form */}
-        <OrderForm currentLang={currentLang} />
 
         {/* 9. Final CTA */}
         <FinalCTA currentLang={currentLang} />

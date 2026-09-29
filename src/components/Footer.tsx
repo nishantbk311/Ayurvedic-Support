@@ -95,6 +95,7 @@ export const Footer: React.FC<FooterProps> = ({ currentLang }) => {
               <img
               src={logo}
               alt="Ayurvedic Support"
+                onContextMenu={(e) => e.preventDefault()}
               className="h-9 sm:h-15 w-auto object-contain"
             />
         

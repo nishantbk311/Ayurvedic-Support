@@ -24,6 +24,7 @@ export const Ingredients: React.FC<IngredientsProps> = ({ currentLang }) => {
       <img
         src={gokshuraImg}
         alt="गोखरु"
+          onContextMenu={(e) => e.preventDefault()}
         className="w-12 h-12 object-contain drop-shadow-xs"
       />
     ),
@@ -36,6 +37,7 @@ export const Ingredients: React.FC<IngredientsProps> = ({ currentLang }) => {
       <img
         src={punarnavaImg}
         alt="पुनर्नवा"
+          onContextMenu={(e) => e.preventDefault()}
         className="w-12 h-12 object-contain drop-shadow-xs"
       />
     ),
@@ -48,6 +50,7 @@ export const Ingredients: React.FC<IngredientsProps> = ({ currentLang }) => {
       <img
         src={varunaImg}
         alt="वरुण"
+          onContextMenu={(e) => e.preventDefault()}
         className="w-12 h-12 object-contain drop-shadow-xs"
       />
     ),
@@ -60,6 +63,7 @@ export const Ingredients: React.FC<IngredientsProps> = ({ currentLang }) => {
       <img
         src={pashanbhedImg}
         alt="पाषाणभेद"
+          onContextMenu={(e) => e.preventDefault()}
         className="w-12 h-12 object-contain drop-shadow-xs"
       />
     ),
