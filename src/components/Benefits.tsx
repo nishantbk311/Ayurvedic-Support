@@ -96,16 +96,16 @@ export const Benefits: React.FC<BenefitsProps> = ({ currentLang }) => {
         </motion.div>
 
         {/* 2-Part Layout: Left Image + Right Benefit Cards perfectly aligned */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-[5.5fr_6.5fr] gap-6 sm:gap-8 lg:gap-10 items-stretch">
           {/* Left Column: Visual Showcase Image (Pure Image, perfectly matching cards height) */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.6, ease: 'easeOut' as const }}
-            className="lg:col-span-5 flex flex-col h-full"
+            className=" flex flex-col h-full"
           >
-            <div className="relative rounded-[28px] overflow-hidden border border-[#e6dcce] shadow-[0_4px_24px_rgba(90,70,40,0.07)] bg-[#f8f4ec] w-full flex-1 min-h-[340px] sm:min-h-[420px] lg:min-h-0">
+            <div className="aspect-[4/5] relative rounded-[28px] overflow-hidden border border-[#e6dcce] shadow-[0_4px_24px_rgba(90,70,40,0.07)] bg-[#f8f4ec] w-full flex-1 min-h-[340px] sm:min-h-[420px] lg:min-h-0">
               <img
                 src={benefitsVisual}
                 alt="Ayurvedic Kidney Herbal Churna Benefits"
@@ -125,7 +125,7 @@ export const Benefits: React.FC<BenefitsProps> = ({ currentLang }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
-            className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"
+            className=" grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"
           >
             {t.items.map((item, idx) => {
               const iconConfig = cardIcons[idx] || cardIcons[0];
